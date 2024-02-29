@@ -46,6 +46,7 @@ describe('Paramo Tech Challenge', () => {
   it( "Validate homepage elements", () => {
     cy.url().should("include","demo.casino")
     //Checking the visibility of required elements
+    cy.get('.header__layout').should('be.visible')
 })
 
 } )
