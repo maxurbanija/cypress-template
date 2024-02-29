@@ -1,6 +1,7 @@
 describe('Paramo Tech Challenge', () => {
   beforeEach(() => {
     cy.visit('https://demo.casino',{ failOnStatusCode: false })
+    cy.get('.mfp-close',{timeout:20000}).should('exist',).click()
   })
 
   it('User Sign Up', () => {
@@ -12,7 +13,6 @@ describe('Paramo Tech Challenge', () => {
     const email = 'test@gmail.com'
     const password = 'Paramo123'
   
-    cy.get('.mfp-close',{timeout:20000}).should('exist',).click()
     cy.get('[data-test="input-email"]').scrollIntoView()
     cy.get('[data-test="input-email"]')
       .as('inputEmail')
