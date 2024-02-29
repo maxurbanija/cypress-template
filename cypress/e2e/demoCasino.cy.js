@@ -6,7 +6,7 @@ describe('Paramo Tech Challenge', () => {
 
   it('User Sign Up', () => {
     
-    cy.get('[data-test="nav-reg-head"]').should('be.enabled').click()
+    cy.get('[data-test="nav-reg-head"]').should('be.visible').click()
     cy.url().should("include", "/user/registration")
   
     // Fill the form with user data

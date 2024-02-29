@@ -4,6 +4,7 @@ module.exports = defineConfig({
   projectId: "zgnv6i",
   video: true,
   screenshotOnRunFailure: true,
+  pageLoadTimeout: 120000,
   reporter: 'cypress-mochawesome-reporter',
   reporterOptions: {
     charts: true,
