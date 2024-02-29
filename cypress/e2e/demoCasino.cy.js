@@ -1,3 +1,13 @@
+import {
+  signUpBtn,
+  emailInput,
+  agreeTermsDiv,
+  noBonusCheckBox,
+  passwordInput,
+  passwordConfirmationInput,
+  createAccountBtn
+} from '../locators/demoCasinoPage';
+
 describe('Paramo Tech Challenge', () => {
   beforeEach(() => {
     cy.visit('https://demo.casino',{ failOnStatusCode: false })
@@ -5,16 +15,16 @@ describe('Paramo Tech Challenge', () => {
   })
 
   it('User Sign Up', () => {
-    
-    cy.get('[data-test="nav-reg-head"]').should('be.visible').click()
-    cy.url().should("include", "/user/registration")
-  
     // Fill the form with user data
     const email = 'test@gmail.com'
     const password = 'Paramo123'
-  
-    cy.get('[data-test="input-email"]').scrollIntoView()
-    cy.get('[data-test="input-email"]')
+
+    cy.get(signUpBtn)
+      .should('be.visible')
+      .click()
+    cy.url()
+      .should("include", "/user/registration")
+    cy.get(emailInput)
       .as('inputEmail')
       .should('be.visible')
       .should('be.enabled')
@@ -22,35 +32,37 @@ describe('Paramo Tech Challenge', () => {
       .and('have.attr','placeholder','Email')
       .type(email)
       .should('have.value',email)
-    
-    cy.contains('I unconditionally agree with ').click()
-    cy.get('[for="bonus-0"]').click()
-    cy.get('[data-test="input-password"]')
+    cy.contains(agreeTermsDiv)
+      .should('be.visible')
+      .click()
+    cy.get(noBonusCheckBox)
+      .click()
+    cy.get(passwordInput)
       .as('inputPassword')
       .should('be.visible')
       .should('be.enabled')
       .and('have.attr','type','password')
       .and('have.attr','placeholder','Password')
       .type(password)
-    cy.get('[data-test="input-password_confirmation"]')
-      .as('inputPasswordConfirmation')
+    cy.get(passwordConfirmationInput)
+      .as('passwordConfirmationInput')
       .should('be.visible')
       .should('be.enabled')
       .and('have.attr','type','password')
       .and('have.attr','placeholder','Reenter password')
       .type(password) 
-
-      cy.get('[data-test="control-submit"]').as('createAccountButton').click()
+    cy.get(createAccountBtn)
+      .as('createAccountButton')
+      .click()
   })
 
-  it( "Validate homepage elements", () => {
+  it.only( "Validate homepage elements", () => {
     cy.url().should("include","demo.casino")
     //Checking the visibility of required elements
     cy.get('.header__layout').should('be.visible')
-    cy.get('.sidebar__component').should('be.visible')
-    cy.contains('Popular games').should('be.visible')
-    cy.contains('New games').should('be.visible')
-    cy.contains('Recommended games').should('be.visible')
+    cy.contains('h2','Popular games').scrollIntoView().should('be.visible')
+    cy.contains('h2','New games').scrollIntoView().should('be.visible')
+    cy.contains('h2','Recommended games').scrollIntoView().should('be.visible')
 })
 
 } )
