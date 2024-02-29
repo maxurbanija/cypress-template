@@ -47,6 +47,10 @@ describe('Paramo Tech Challenge', () => {
     cy.url().should("include","demo.casino")
     //Checking the visibility of required elements
     cy.get('.header__layout').should('be.visible')
+    cy.get('.sidebar__component').should('be.visible')
+    cy.contains('Popular games').should('be.visible')
+    cy.contains('New games').should('be.visible')
+    cy.contains('Recommended games').should('be.visible')
 })
 
 } )
