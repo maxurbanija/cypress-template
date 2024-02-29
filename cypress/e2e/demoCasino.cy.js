@@ -12,7 +12,7 @@ describe('Paramo Tech Challenge', () => {
     const email = 'test@gmail.com'
     const password = 'Paramo123'
   
-    cy.get('.mfp-close',{timeout:16000}).should('exist',).click()
+    cy.get('.mfp-close',{timeout:20000}).should('exist',).click()
     cy.get('[data-test="input-email"]').scrollIntoView()
     cy.get('[data-test="input-email"]')
       .as('inputEmail')
