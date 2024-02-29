@@ -6,7 +6,7 @@ describe('Paramo Tech Challenge', () => {
 
   it('User Sign Up', () => {
     
-    cy.visit('https://demo.casino/user/registration',{ failOnStatusCode: false })
+    cy.get('[data-test="nav-reg-head"]').should('be.enabled').click()
     cy.url().should("include", "/user/registration")
   
     // Fill the form with user data
