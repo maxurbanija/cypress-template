@@ -1,12 +1,18 @@
 import {
-  signUpBtn,
   emailInput,
   agreeTermsDiv,
   noBonusCheckBox,
   passwordInput,
   passwordConfirmationInput,
   createAccountBtn
-} from '../locators/demoCasinoPage';
+} from '../locators/registrationPage';
+
+import {
+  popularGamesLabel,
+  recommendedGamesLabel,
+  signUpBtn,
+  newGamesLabel,
+} from '../locators/homePage';
 
 describe('Paramo Tech Challenge', () => {
   beforeEach(() => {
@@ -60,10 +66,16 @@ describe('Paramo Tech Challenge', () => {
     cy.url().should("include","demo.casino")
     //Checking the visibility of required elements
     cy.get('.header__layout').should('be.visible')
-    cy.contains('h2','Popular games').scrollIntoView().should('be.visible')
-    cy.contains('h2','New games').scrollIntoView().should('be.visible')
-    cy.contains('h2','Recommended games').scrollIntoView().should('be.visible')
-})
+    cy.contains('h2',popularGamesLabel)
+      .scrollIntoView()
+      .should('be.visible')
+    cy.contains('h2',newGamesLabel)
+      .scrollIntoView()
+      .should('be.visible')
+    cy.contains('h2',recommendedGamesLabel)
+      .scrollIntoView()
+      .should('be.visible')
+  })
 
-} )
+})
 
