@@ -14,7 +14,7 @@ import {
   newGamesLabel,
 } from '../locators/homePage';
 
-describe('Paramo Tech Challenge', () => {
+describe('Demo Casino Challenge', () => {
   beforeEach(() => {
     cy.visit('https://demo.casino',{ failOnStatusCode: false })
     cy.get('.mfp-close',{timeout:20000}).should('exist',).click()
