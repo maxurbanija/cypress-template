@@ -14,7 +14,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         
-      - name: Ver detalles del CPU
+      - name: See CPU Details
         run: lscpu
         
       - name: Cypress run
