@@ -5,6 +5,7 @@ on:
       - main  
   schedule:
     - cron: '0 8 * * *'
+  workflow_dispatch:
 jobs:
   cypress-run:
     name: Cypress run
@@ -12,7 +13,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
+        
+      - name: See CPU Details
+        run: lscpu
+        
       - name: Cypress run
         uses: cypress-io/github-action@v6
         with:
