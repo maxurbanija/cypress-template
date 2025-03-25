@@ -3,22 +3,20 @@ import{
     wikipediaSearchResult
 } from '../locators/googlePage';
 
-describe('Google search flow', () => {
-it( "Validate google results", () => {
-    cy.visit( 'https://www.google.com' );
-    cy.url().should("include","google");
+describe('Verify DolarHoy values', () => {
+it( "Validate DolarHoy displays exchange rates", () => {
+    cy.visit( 'https://dolarhoy.com/' );
+    cy.url().should("include","dolarhoy");
     
-    cy.get(searchInput)
-        .type('automation')
-        .type('{enter}');
-    cy.get('#search')
+    cy.get('.compra .val')
         .should('be.visible');
-    cy.scrollTo('bottom');
-    cy.get(wikipediaSearchResult).click();
+    
+    cy.screenshot('ExchangeRates');
 
-    cy.origin('https://en.wikipedia.org', () => {
-        cy.get('#firstHeading').should('be.visible');
-        cy.contains(' Also in 1745, ').scrollIntoView().should('be.visible').screenshot();
-    })
+
+  })
+
+  it("Check web",( ) => {
+    cy.visit('https://sweetshop.netlify.app/sweets');
   })
 })
