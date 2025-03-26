@@ -1,4 +1,4 @@
-name: Parallel Cypress tests
+name: Cypress tests
 on: 
   push:
     branches:
@@ -6,24 +6,23 @@ on:
   schedule:
     - cron: '0 8 * * *'
   workflow_dispatch:
+
 jobs:
   generate-folders:
     name: Generate Test Folders
     runs-on: ubuntu-22.04
     outputs:
-      folders: ${{ steps.set-output.outputs.folders }}
+      folders: ${{ steps.generate.outputs.folders }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
       - name: Generate test folders
-        id: set-output
+        id: generate
         run: |
           # Encuentra todas las carpetas dentro de "cypress/e2e" y genera una lista de rutas
-          FOLDERS=$(find cypress/e2e -mindepth 1 -maxdepth 1 -type d | awk '{print "\""$0"\""}' | jq -s .)
+          FOLDERS=$(find cypress/e2e -mindepth 1 -maxdepth 1 -type d | jq -R -s 'split("\n")[:-1]')
           echo "folders=$FOLDERS" >> $GITHUB_OUTPUT
-      - name: Debug generated folders
-        run: echo "Generated folders: ${{ steps.set-output.outputs.folders }}"
 
   cypress-run:
     name: Cypress run
@@ -63,13 +62,12 @@ jobs:
       - name: Download all test results
         uses: actions/download-artifact@v3
         with:
-          name: cypress-results-*
+          path: all-results
 
       - name: Combine reports
         run: |
           mkdir -p combined-reports
-          # Combina todos los reportes en un solo archivo
-          find . -name "*.json" -exec cat {} + > combined-reports/combined-report.json
+          find all-results -name "*.json" -exec cat {} + > combined-reports/combined-report.json
 
       - name: Upload combined report
         uses: actions/upload-artifact@v3
