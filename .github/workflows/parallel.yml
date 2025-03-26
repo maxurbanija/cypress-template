@@ -20,8 +20,10 @@ jobs:
         id: set-output
         run: |
           # Encuentra todas las carpetas dentro de "cypress/e2e" y genera una lista de rutas
-          FOLDERS=$(find cypress/e2e -mindepth 1 -maxdepth 1 -type d | sed 's/^/"/;s/$/"/' | jq -s .)
+          FOLDERS=$(find cypress/e2e -mindepth 1 -maxdepth 1 -type d | awk '{print "\""$0"\""}' | jq -s .)
           echo "folders=$FOLDERS" >> $GITHUB_OUTPUT
+      - name: Debug generated folders
+        run: echo "Generated folders: ${{ steps.set-output.outputs.folders }}"
 
   cypress-run:
     name: Cypress run
