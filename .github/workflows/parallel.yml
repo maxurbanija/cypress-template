@@ -1,4 +1,4 @@
-name: Cypress tests
+name: Parallel Cypress tests
 on: 
   push:
     branches:
