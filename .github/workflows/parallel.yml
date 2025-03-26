@@ -1,0 +1,76 @@
+name: Cypress tests
+on: 
+  push:
+    branches:
+      - main  
+  schedule:
+    - cron: '0 8 * * *'
+  workflow_dispatch:
+jobs:
+  generate-folders:
+    name: Generate Test Folders
+    runs-on: ubuntu-22.04
+    outputs:
+      folders: ${{ steps.set-output.outputs.folders }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Generate test folders
+        id: set-output
+        run: |
+          # Encuentra todas las carpetas dentro de "cypress/e2e" y genera una lista de rutas
+          FOLDERS=$(find cypress/e2e -type d -not -path "cypress/e2e" | jq -R . | jq -s .)
+          echo "folders=$FOLDERS" >> $GITHUB_OUTPUT
+
+  cypress-run:
+    name: Cypress run
+    needs: generate-folders
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        folder: ${{ fromJson(needs.generate-folders.outputs.folders) }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        
+      - name: Install dependencies
+        run: npm install
+        
+      - name: Run Cypress tests
+        uses: cypress-io/github-action@v6
+        with:
+          record: true
+          browser: chrome
+          spec: "${{ matrix.folder }}/**/*"
+        env:
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+          CYPRESS_PROJECT_ID: ${{ secrets.PROJECT_ID }}
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v3
+        with:
+          name: cypress-results-${{ matrix.folder }}
+          path: cypress/reports
+
+  combine-reports:
+    name: Combine Reports
+    needs: cypress-run
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Download all test results
+        uses: actions/download-artifact@v3
+        with:
+          name: cypress-results-*
+
+      - name: Combine reports
+        run: |
+          mkdir -p combined-reports
+          # Combina todos los reportes en un solo archivo
+          find . -name "*.json" -exec cat {} + > combined-reports/combined-report.json
+
+      - name: Upload combined report
+        uses: actions/upload-artifact@v3
+        with:
+          name: combined-cypress-report
+          path: combined-reports/combined-report.json
