@@ -15,4 +15,4 @@ it( "Validate DolarHoy displays exchange rates", () => {
 
 
   })
-}
+})
